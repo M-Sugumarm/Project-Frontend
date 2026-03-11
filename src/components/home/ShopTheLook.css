@@ -1,0 +1,152 @@
+.shop-the-look {
+    padding: 80px 5%;
+    background-color: #fcfcfc;
+}
+
+.shop-the-look-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.shop-the-look-header h2 {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+}
+
+.shop-the-look-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.bundles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.bundle-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bundle-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.bundle-image-container {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+}
+
+.bundle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.bundle-card:hover .bundle-image {
+    transform: scale(1.05);
+}
+
+.bundle-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.bundle-item-count {
+    background: rgba(26, 26, 26, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.bundle-content {
+    padding: 30px;
+}
+
+.bundle-content h3 {
+    font-size: 1.5rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.bundle-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.bundle-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.bundle-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.bundle-tag {
+    color: #d4af37;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.shop-bundle-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.shop-bundle-btn:hover {
+    background: #d4af37;
+    color: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+    .shop-the-look {
+        padding: 50px 5%;
+    }
+
+    .bundles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bundle-image-container {
+        height: 300px;
+    }
+}

@@ -1,0 +1,251 @@
+/* Textured Fabric Background */
+.splash-screen-container {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: default;
+    transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    --mouse-x: 0px;
+    --mouse-y: 0px;
+}
+
+.splash-screen-container.exit {
+    clip-path: circle(0% at 50% 50%);
+    pointer-events: none;
+}
+
+/* Weave Pattern Overlay */
+.weave-pattern-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Floating Fabric Layers */
+.fabric-layers {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.fabric-layer {
+    position: absolute;
+    width: 150vw;
+    height: 150vh;
+    left: -25vw;
+    top: -25vh;
+    background: linear-gradient(120deg, transparent 30%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
+    transform-origin: center;
+    transition: transform 0.5s ease-out;
+    /* Smoother mouse follow */
+}
+
+/* Slower fabric flow animations */
+.layer-1 {
+    animation: flowFabric 20s infinite ease-in-out;
+    transform: translate(var(--mouse-x), var(--mouse-y)) rotate(0deg);
+}
+
+.layer-2 {
+    animation: flowFabric 25s infinite ease-in-out reverse;
+    transform: translate(calc(var(--mouse-x) * -1.5), calc(var(--mouse-y) * -1.5)) rotate(45deg);
+    background: linear-gradient(60deg, transparent 30%, rgba(79, 70, 229, 0.05) 50%, transparent 70%);
+}
+
+.layer-3 {
+    animation: flowFabric 30s infinite ease-in-out;
+    transform: translate(calc(var(--mouse-x) * 0.5), calc(var(--mouse-y) * 0.5)) rotate(-15deg);
+    background: linear-gradient(180deg, transparent 30%, rgba(165, 180, 252, 0.03) 50%, transparent 70%);
+}
+
+@keyframes flowFabric {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Central Content */
+.splash-center {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+/* Shirt Animation */
+.shirt-animation-container {
+    width: 220px;
+    height: 220px;
+    position: relative;
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+}
+
+.shirt-svg {
+    width: 100%;
+    height: 100%;
+    fill: transparent;
+    stroke: white;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+}
+
+.shirt-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: all 1s ease;
+}
+
+.detail-path {
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    opacity: 0.7;
+    fill: transparent;
+    /* Ensure details interact properly */
+    transition: all 1s ease;
+}
+
+/* Phase Animations - Slower Durations */
+.splash-screen-container.filling .shirt-path {
+    animation: drawLine 2.5s ease-out forwards, fillShirt 1.5s ease forwards 2.5s;
+}
+
+.splash-screen-container.filling .detail-path {
+    animation: drawLine 2s ease-out forwards 1s;
+}
+
+.splash-screen-container.interactive .shirt-path {
+    stroke-dashoffset: 0;
+    fill: rgba(99, 102, 241, 0.2);
+    filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.6));
+    animation: floatShirt 6s infinite ease-in-out;
+}
+
+.splash-screen-container.interactive .detail-path {
+    stroke-dashoffset: 0;
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes fillShirt {
+    to {
+        fill: rgba(99, 102, 241, 0.15);
+        stroke: #818cf8;
+    }
+}
+
+@keyframes floatShirt {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* Brand Reveal */
+.brand-reveal {
+    text-align: center;
+    overflow: hidden;
+}
+
+.splash-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.word-jay,
+.word-textile {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.word-jay {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.word-textile {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    font-weight: 400;
+    color: #a5b4fc;
+}
+
+/* Slower text reveals */
+.splash-screen-container.filling .word-jay {
+    animation: fadeInUp 1.2s ease forwards 1s;
+}
+
+.splash-screen-container.filling .word-textile {
+    animation: fadeInUp 1.2s ease forwards 1.5s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loader Bar */
+.splash-loader-bar {
+    width: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-top: 2.5rem;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: width 0.8s ease;
+}
+
+.splash-screen-container.filling .splash-loader-bar {
+    width: 200px;
+}
+
+.splash-progress {
+    width: 100%;
+    height: 100%;
+    background: #6366f1;
+    transform: translateX(-100%);
+    animation: loadProgress 3s ease-in-out forwards 1.5s;
+}
+
+@keyframes loadProgress {
+    to {
+        transform: translateX(0);
+    }
+}
