@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Plus, Search, Edit, Trash2, Eye, RefreshCw, X, Package, Megaphone } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Eye, RefreshCw, X, Package, Megaphone, Upload, Image as ImageIcon } from 'lucide-react';
 import Loader from '../../components/common/Loader';
 import './ProductManagement.css';
 
@@ -527,39 +527,70 @@ const ProductManagement = () => {
                             </div>
                             <div className="form-group">
                                 <label>Product Image</label>
-                                <div className="image-upload-container" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                    <div className="image-preview" style={{ 
-                                        width: '80px', 
-                                        height: '80px', 
-                                        backgroundColor: '#1a1a1a', 
-                                        borderRadius: '8px',
-                                        overflow: 'hidden',
-                                        border: '1px solid #333'
-                                    }}>
-                                        <img 
-                                            src={imagePreview || formData.imageUrl || 'https://placehold.co/100x100/1a1a1a/d4af37?text=Image'} 
-                                            alt="Preview" 
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
+                                <div className="image-upload-section">
+                                    <div className="image-preview-large">
+                                        {imagePreview || formData.imageUrl ? (
+                                            <div className="preview-container">
+                                                <img 
+                                                    src={imagePreview || formData.imageUrl} 
+                                                    alt="Product Preview" 
+                                                />
+                                                <button 
+                                                    type="button" 
+                                                    className="remove-image"
+                                                    onClick={() => {
+                                                        setImageFile(null);
+                                                        setImagePreview(null);
+                                                        setFormData(prev => ({ ...prev, imageUrl: '' }));
+                                                    }}
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="upload-placeholder" onClick={() => document.getElementById('product-image-upload').click()}>
+                                                <Upload size={32} />
+                                                <span>Click to upload image</span>
+                                            </div>
+                                        )}
                                     </div>
-                                    <div style={{ flex: 1 }}>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleImageChange}
-                                            className="file-input"
-                                            style={{ marginBottom: '0.5rem' }}
-                                        />
-                                        <input
-                                            type="text"
-                                            name="imageUrl"
-                                            value={formData.imageUrl}
-                                            onChange={handleInputChange}
-                                            placeholder="Or enter Image URL"
-                                        />
+                                    
+                                    <div className="upload-controls">
+                                        <div className="file-input-wrapper">
+                                            <input
+                                                id="product-image-upload"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageChange}
+                                                className="hidden-file-input"
+                                            />
+                                            <button 
+                                                type="button" 
+                                                className="btn btn-secondary btn-sm"
+                                                onClick={() => document.getElementById('product-image-upload').click()}
+                                            >
+                                                <ImageIcon size={16} /> {imageFile ? 'Change Image' : 'Select Local File'}
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="url-input-wrapper">
+                                            <input
+                                                type="text"
+                                                name="imageUrl"
+                                                value={formData.imageUrl}
+                                                onChange={handleInputChange}
+                                                placeholder="Or paste external image URL"
+                                                className="url-input"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                {uploading && <small style={{ color: 'var(--color-accent)' }}>Preparing upload...</small>}
+                                {uploading && (
+                                    <div className="upload-status">
+                                        <RefreshCw size={14} className="spin" />
+                                        <span>Uploading to cloud storage...</span>
+                                    </div>
+                                )}
                             </div>
                             <div className="form-row">
                                 <div className="form-group">
