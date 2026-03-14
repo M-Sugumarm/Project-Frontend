@@ -17,6 +17,9 @@ const ProductManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [error, setError] = useState(null);
 
     // Broadcast state
@@ -45,6 +48,42 @@ const ProductManagement = () => {
         material: '',
         brand: 'Jay Shri Textile'
     });
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const uploadImage = async () => {
+        if (!imageFile) return formData.imageUrl;
+        
+        setUploading(true);
+        try {
+            const uploadData = new FormData();
+            uploadData.append('file', imageFile);
+
+            const response = await fetch(`${API_ENDPOINTS.products.replace('/products', '/files/upload')}`, {
+                method: 'POST',
+                body: uploadData
+            });
+
+            if (!response.ok) throw new Error('Failed to upload image');
+            const data = await response.json();
+            return data.url;
+        } catch (err) {
+            console.error('Upload error:', err);
+            throw new Error('Image upload failed: ' + err.message);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     // Fetch products
     const fetchProducts = async () => {
@@ -144,6 +183,8 @@ const ProductManagement = () => {
             brand: 'Jay Shri Textile'
         });
         setIsModalOpen(true);
+        setImageFile(null);
+        setImagePreview(null);
     };
 
     const handleInputChange = (e) => {
@@ -159,6 +200,12 @@ const ProductManagement = () => {
         setSaving(true);
 
         try {
+            let finalImageUrl = formData.imageUrl;
+            
+            if (imageFile) {
+                finalImageUrl = await uploadImage();
+            }
+
             const productData = {
                 name: formData.name,
                 description: formData.description,
@@ -166,7 +213,7 @@ const ProductManagement = () => {
                 originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
                 stock: parseInt(formData.stock),
                 categoryId: formData.categoryId ? String(formData.categoryId) : null,  // Must be String to match Firestore
-                imageUrl: formData.imageUrl || null,
+                imageUrl: finalImageUrl || null,
                 isFeatured: formData.isFeatured,
                 isUpcoming: formData.isUpcoming,
                 sizes: formData.sizes,
@@ -479,14 +526,40 @@ const ProductManagement = () => {
                                 ></textarea>
                             </div>
                             <div className="form-group">
-                                <label>Image URL</label>
-                                <input
-                                    type="text"
-                                    name="imageUrl"
-                                    value={formData.imageUrl}
-                                    onChange={handleInputChange}
-                                    placeholder="https://..."
-                                />
+                                <label>Product Image</label>
+                                <div className="image-upload-container" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    <div className="image-preview" style={{ 
+                                        width: '80px', 
+                                        height: '80px', 
+                                        backgroundColor: '#1a1a1a', 
+                                        borderRadius: '8px',
+                                        overflow: 'hidden',
+                                        border: '1px solid #333'
+                                    }}>
+                                        <img 
+                                            src={imagePreview || formData.imageUrl || 'https://placehold.co/100x100/1a1a1a/d4af37?text=Image'} 
+                                            alt="Preview" 
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                            className="file-input"
+                                            style={{ marginBottom: '0.5rem' }}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="imageUrl"
+                                            value={formData.imageUrl}
+                                            onChange={handleInputChange}
+                                            placeholder="Or enter Image URL"
+                                        />
+                                    </div>
+                                </div>
+                                {uploading && <small style={{ color: 'var(--color-accent)' }}>Preparing upload...</small>}
                             </div>
                             <div className="form-row">
                                 <div className="form-group">

@@ -7,7 +7,8 @@ import ShopTheLook from '../components/home/ShopTheLook';
 import { Truck, RotateCcw, Shield, Headphones, ChevronLeft, ChevronRight, Star, Quote, Mail, CheckCircle, Loader } from 'lucide-react';
 import './Home.css';
 
-const API_BASE = 'http://localhost:8080/api';
+import API_BASE_URL from '../config/api';
+import { API_ENDPOINTS } from '../config/api';
 
 // Animated counter hook
 const useCountUp = (end, duration = 2000, startCounting) => {
@@ -115,7 +116,7 @@ const Home = () => {
         if (!subEmail.trim()) return;
         setSubStatus('loading');
         try {
-            const res = await fetch(`${API_BASE}/subscribe`, {
+            const res = await fetch(`${API_BASE_URL}/subscribe`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: subEmail.trim(), name: subName.trim() }),

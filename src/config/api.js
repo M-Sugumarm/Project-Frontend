@@ -1,5 +1,5 @@
 // Centralized API configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://project-backend-x4r5.onrender.com/api';
 
 // API endpoints
 export const API_ENDPOINTS = {
