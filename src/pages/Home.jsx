@@ -111,6 +111,10 @@ const Home = () => {
     const [subStatus, setSubStatus] = useState('idle'); // idle | loading | success | error
     const [subMessage, setSubMessage] = useState('');
 
+    useEffect(() => {
+        console.log('--- SYSTEM DEBUG: Current API URL is:', API_BASE_URL);
+    }, []);
+
     const handleSubscribe = async (e) => {
         e.preventDefault();
         if (!subEmail.trim()) return;
