@@ -89,6 +89,12 @@ export const analyticsApi = {
 export const userApi = {
     getProfile: () => api.get('/users/profile'),
     updateProfile: (data) => api.put('/users/profile', data),
+    getAll: () => api.get('/users'),
+};
+
+// Broadcast API
+export const broadcastApi = {
+    send: (data) => api.post('/subscribe/broadcast', data),
 };
 
 export default api;

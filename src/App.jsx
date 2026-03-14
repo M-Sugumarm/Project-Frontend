@@ -16,6 +16,7 @@ import InventoryManagement from './pages/admin/InventoryManagement';
 import Orders from './pages/admin/Orders';
 import Categories from './pages/admin/Categories';
 import AdminBundles from './pages/admin/AdminBundles';
+import Users from './pages/admin/Users';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import SplashScreen from './components/common/SplashScreen';
 import AIChatbot from './components/common/AIChatbot';
@@ -54,6 +55,7 @@ const AppContent = () => {
           <Route path="bundles" element={<AdminBundles />} />
           <Route path="categories" element={<Categories />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="users" element={<Users />} />
           <Route path="inventory" element={<InventoryManagement />} />
         </Route>
       </Routes>

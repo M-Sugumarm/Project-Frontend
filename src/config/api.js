@@ -30,6 +30,9 @@ export const API_ENDPOINTS = {
     // Users
     users: `${API_BASE_URL}/users`,
     userById: (id) => `${API_BASE_URL}/users/${id}`,
+
+    // Broadcast
+    broadcast: `${API_BASE_URL}/subscribe/broadcast`,
 };
 
 // Helper function for API calls

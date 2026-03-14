@@ -61,6 +61,38 @@ const Orders = () => {
         }
     };
 
+    const handleExport = () => {
+        if (filteredOrders.length === 0) {
+            alert('No orders to export');
+            return;
+        }
+
+        const headers = ['Order ID', 'Customer Email', 'Date', 'Total Amount', 'Status', 'Items Count'];
+        const csvRows = filteredOrders.map(order => [
+            order.id,
+            order.email || order.user?.email || 'Guest',
+            order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A',
+            order.totalAmount || 0,
+            order.status,
+            order.items?.length || 0
+        ]);
+
+        const csvContent = [
+            headers.join(','),
+            ...csvRows.map(row => row.join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     const filteredOrders = orders.filter(order => {
         const matchesSearch = (order.id && order.id.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (order.user?.email && order.user.email.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -111,7 +143,7 @@ const Orders = () => {
                     >
                         <RefreshCw size={18} /> {refreshing ? 'Refreshing...' : 'Refresh'}
                     </button>
-                    <button className="btn btn-primary">
+                    <button className="btn btn-primary" onClick={handleExport}>
                         <Download size={18} /> Export Orders
                     </button>
                 </div>

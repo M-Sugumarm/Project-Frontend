@@ -6,6 +6,8 @@ import './ProductManagement.css';
 
 import { API_ENDPOINTS } from '../../config/api';
 
+import { broadcastApi } from '../../services/api';
+
 const ProductManagement = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -228,24 +230,13 @@ const ProductManagement = () => {
         e.preventDefault();
         setSendingBroadcast(true);
         try {
-            // Note: In a real app we'd fetch this from API_ENDPOINTS.
-            // But since the new backend route isn't listed there yet, we use a fixed URL.
-            const response = await fetch('http://localhost:8080/api/subscribe/broadcast', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(broadcastData)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || 'Failed to send broadcast');
-            }
-
+            await broadcastApi.send(broadcastData);
             alert('Broadcast sent successfully! Emails are being dispatched to all subscribers.');
             setIsBroadcastModalOpen(false);
             setBroadcastData({ offerType: 'DISCOUNT_10', title: '', message: '', promoCode: '' });
         } catch (err) {
-            alert('Error sending broadcast: ' + err.message);
+            const errorMessage = err.response?.data?.message || err.message || 'Failed to send broadcast';
+            alert('Error sending broadcast: ' + errorMessage);
         } finally {
             setSendingBroadcast(false);
         }

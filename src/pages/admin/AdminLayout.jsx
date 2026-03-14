@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard, Package, Tag, ShoppingCart, BarChart3,
-    Warehouse, Settings, LogOut, Menu, X, Crown, ChevronRight, Layers
+    Warehouse, Settings, LogOut, Menu, X, Crown, ChevronRight, Layers,
+    Users
 } from 'lucide-react';
 import './AdminLayout.css';
 
@@ -16,6 +17,7 @@ const AdminLayout = () => {
         { path: '/admin/bundles', icon: Layers, label: 'Bundles' },
         { path: '/admin/categories', icon: Tag, label: 'Categories' },
         { path: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
+        { path: '/admin/users', icon: Users, label: 'Users' },
         { path: '/admin/inventory', icon: Warehouse, label: 'Inventory' }
     ];
 
