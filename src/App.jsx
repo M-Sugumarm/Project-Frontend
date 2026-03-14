@@ -52,7 +52,6 @@ const AppContent = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="products" element={<ProductManagement />} />
-          <Route path="bundles" element={<AdminBundles />} />
           <Route path="categories" element={<Categories />} />
           <Route path="orders" element={<Orders />} />
           <Route path="users" element={<Users />} />

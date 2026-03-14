@@ -14,7 +14,6 @@ const AdminLayout = () => {
     const navItems = [
         { path: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
         { path: '/admin/products', icon: Package, label: 'Products' },
-        { path: '/admin/bundles', icon: Layers, label: 'Bundles' },
         { path: '/admin/categories', icon: Tag, label: 'Categories' },
         { path: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
         { path: '/admin/users', icon: Users, label: 'Users' },
